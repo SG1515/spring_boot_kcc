@@ -2,9 +2,7 @@ package com.kcc.restfulservice.controller;
 
 import com.kcc.restfulservice.UserDaoService;
 import com.kcc.restfulservice.bean.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,12 @@ public class UserController {
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable int id) {
         return service.findOne(id);
+    }
+
+    @PostMapping("/users")
+    public void createUser(@RequestBody User user) {
+        User savedUser = service.save(user);
+
     }
 
 
