@@ -47,5 +47,6 @@ public class CustomizedResponseEntityHandler  extends ResponseEntityExceptionHan
                         ex.getBindingResult().toString());
 
 
-        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);    }
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }
