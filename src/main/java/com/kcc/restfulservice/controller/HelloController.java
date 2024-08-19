@@ -2,6 +2,7 @@ package com.kcc.restfulservice.controller;
 
 
 import com.kcc.restfulservice.bean.HelloWorldBean;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,5 +24,6 @@ public class HelloController {
     public HelloWorldBean helloWorldBean2(@PathVariable String name){
         return new HelloWorldBean(String.format("Hello world bean, %s", name));
     }
+
 
 }

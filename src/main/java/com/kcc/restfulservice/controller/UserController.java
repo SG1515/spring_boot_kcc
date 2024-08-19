@@ -47,4 +47,11 @@ public class UserController {
     }
 
 
+    @DeleteMapping("/users/{id}")
+    public String deleteUser(@PathVariable int id) {
+        service.deleteUser(id);
+        return id + "번째 유저가 삭제되었습니다";
+    }
+
+
 }
