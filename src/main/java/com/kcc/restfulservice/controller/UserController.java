@@ -1,8 +1,10 @@
 package com.kcc.restfulservice.controller;
 
 import com.kcc.restfulservice.UserDaoService;
+import com.kcc.restfulservice.bean.Post;
 import com.kcc.restfulservice.bean.User;
 import com.kcc.restfulservice.exception.UserNotFoundException;
+import com.kcc.restfulservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -12,15 +14,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 public class UserController {
-    private UserDaoService service;
+    private UserService service;
 
 
-    public UserController(UserDaoService service) {
+    public UserController(UserService service) {
         this.service = service;
     }
 
@@ -31,7 +34,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public EntityModel retrieveUser(@PathVariable int id) {
-        User user = service.findOne(id);
+        User user = service.findUser(id);
 
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -45,7 +48,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User savedUser = service.save(user);
+        User savedUser = service.createUser(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId())
@@ -54,15 +57,29 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable int id, @Valid @RequestBody Post post){
+        post.setUser_id(id);
+        service.createPost(post);
+        // URI
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
 
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable int id) {
-        User user = service.deleteUser(id);
 
-        if(user == null) {
-            throw new UserNotFoundException(String.format("ID[%s] not found", id));
-        }
+        return ResponseEntity.created(location).build();
     }
+
+
+//    @DeleteMapping("/users/{id}")
+//    public void deleteUser(@PathVariable int id) {
+//        User user = service.deleteUser(id);
+//
+//        if(user == null) {
+//            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+//        }
+//    }
 
 
 }

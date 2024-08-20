@@ -10,18 +10,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name ="users")
+//@Entity
+//@Table(name ="users")
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"password", "ssn"})
-public class User {
+public class User implements Serializable {
 
-    @Id
-    @GeneratedValue
+//    @Id
+//    @GeneratedValue
     private Integer id;
 
 
@@ -38,8 +39,8 @@ public class User {
 //    @JsonIgnore
     private String ssn;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
+//    @OneToMany(mappedBy = "user")
+//    @JsonIgnore
     private List<Post> posts;
 
     public User(Integer id, String name, Date joinDate, String password, String ssn) {
