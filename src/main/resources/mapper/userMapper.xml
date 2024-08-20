@@ -32,8 +32,12 @@
         ON u.id = p.user_id
     </select>
 
-    <select id="findUser" resultType="User">
-        select * from users where id = #{id}
+    <select id="findUser"  resultMap="userMap">
+        select u.id as u_id, name, p.id as p_id , title, content, user_id
+        from users u
+        LEFT JOIN POST P
+        ON U.ID = P.USER_ID
+        WHERE U.ID = #{id}
     </select>
 
     <insert id="createUser" parameterType="User">
