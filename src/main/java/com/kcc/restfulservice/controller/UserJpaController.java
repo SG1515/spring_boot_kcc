@@ -100,5 +100,18 @@ public class UserJpaController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping("/users/{id}/posts/{postNumber}")
+    public Post searchPost(@PathVariable int id, @PathVariable int postNumber) {
+        Optional<User> user = userRepository.findById(id);
+        Optional<Post> post = postRepository.findById(postNumber);
+
+        if(!user.isPresent() || !post.isPresent()){
+            throw new UserNotFoundException(String.format("ID[%s] not found or Post[%s] not found", id, postNumber));
+
+        }
+
+        return post.get();
+    }
+
 
 }
